@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'screens/intro_screen.dart';
 import 'screens/home_screen.dart';
 
-void main() {
-  runApp(MyApp());
+bool show = true;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  show = prefs.getBool('ON_BOARDING') ?? true;
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,8 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Galleria App',
-      home: HomeScreen(),
+      title: 'Onboarding Demo',
+  home: show ? OnBoardingPage() : const HomeScreen(),
     );
   }
 }
